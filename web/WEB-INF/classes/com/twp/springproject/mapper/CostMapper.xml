@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.twp.springproject.dao.CostMapperDao">
+
+    <insert id="addCost" parameterType="com.twp.springproject.entity.CostEntity">
+        INSERT INTO cost VALUES (NULL, #{name}, #{base_duration,jdbcType=INTEGER}
+            , #{base_cost,jdbcType=DECIMAL}, #{unit_cost,jdbcType=DECIMAL}
+            , '1', #{descr,jdbcType=VARCHAR}, now(), NULL, #{cost_type})
+    </insert>
+
+    <!-- 当parameterType指定一个值时，#{名字}可以任意指定 -->
+    <!--  <delete id="delete"
+              parameterType="java.lang.Integer">
+          DELETE FROM t_emp
+          WHERE ID = #{no}
+      </delete>-->
+    <select id="findCostById"
+            parameterType="Integer"
+            resultType="com.twp.springproject.entity.CostEntity">
+        SELECT *
+        FROM cost
+        WHERE ID = #{id}
+    </select>
+
+    <update id="updateCostById"
+            parameterType="com.twp.springproject.entity.CostEntity">
+        UPDATE cost ct
+        SET
+            ct.NAME   = #{name}, BASE_DURATION = #{base_duration,jdbcType=INTEGER},
+            BASE_COST = #{base_cost,jdbcType=DECIMAL},
+            UNIT_COST = #{unit_cost,jdbcType=DECIMAL}, STATUS = #{status},
+            DESCR     = #{descr,jdbcType=VARCHAR}, STARTIME = #{startime},
+            COST_TYPE = #{cost_type}
+        WHERE ID = #{id};
+    </update>
+
+
+    <select id="findAll"
+            parameterType="com.twp.springproject.vo.Page"
+            resultType="com.twp.springproject.entity.CostEntity">
+        SELECT *
+        FROM cost ct
+        ORDER BY ct.ID
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="getCostCount" resultType="Integer">
+        SELECT count(*)
+        FROM cost
+    </select>
+
+
+</mapper>
